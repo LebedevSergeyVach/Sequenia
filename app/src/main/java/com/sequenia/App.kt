@@ -1,22 +1,20 @@
-package com.sequence
+package com.sequenia
 
 import android.app.Application
-import com.sequence.di.apiModule
-import com.sequence.di.repositoryModule
+import com.sequenia.di.ApiModule
+import com.sequenia.di.RepositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import org.koin.ksp.generated.module
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-
         startKoin {
-            // Указываем контекст приложения
             androidContext(this@App)
-            // Подключаем все модули DI
             modules(
-                apiModule,
-                repositoryModule
+                ApiModule().module,
+                RepositoryModule().module,
             )
         }
     }

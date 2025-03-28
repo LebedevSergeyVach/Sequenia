@@ -1,4 +1,4 @@
-package com.eltex.sequence
+package com.sequenia
 
 import org.junit.Test
 

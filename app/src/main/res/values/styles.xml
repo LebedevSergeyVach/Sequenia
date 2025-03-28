@@ -5,7 +5,7 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="windowSplashScreenBackground">@color/splash_screen</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
-        <item name="postSplashScreenTheme">@style/Theme.Sequence</item>
+        <item name="postSplashScreenTheme">@style/Theme.Sequenia</item>
         <item name="android:statusBarColor">@color/splash_screen</item>
     </style>
 </resources>

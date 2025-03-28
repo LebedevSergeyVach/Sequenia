@@ -1,9 +1,9 @@
-package com.sequence.activity
+package com.sequenia.activity
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.sequence.utils.common.EdgeToEdgeHelper
+import com.sequenia.utils.common.EdgeToEdgeHelper
 import com.sequenia.R
 
 

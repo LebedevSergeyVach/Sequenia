@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.sequence.utils.extensions
+package com.sequenia.utils.extensions
 
 import android.content.Context
 import android.provider.Settings
@@ -8,7 +8,7 @@ import android.provider.Settings
 import android.os.Vibrator
 import android.os.VibrationEffect
 
-import com.sequence.utils.helper.LoggerHelper
+import com.sequenia.utils.helper.LoggerHelper
 import com.sequenia.BuildConfig
 
 /**

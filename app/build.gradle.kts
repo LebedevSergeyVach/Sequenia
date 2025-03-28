@@ -14,6 +14,13 @@ plugins {
      * implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
      */
     alias(libs.plugins.serialization)
+
+    /**
+     * KSP - Kotlin Symbol Processing API
+     *
+     * https://github.com/google/ksp
+     */
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -117,6 +124,15 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
 
     /**
+     * Android Jetpack's Navigation component
+     *
+     * https://developer.android.com/guide/navigation
+     *
+     */
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui)
+
+    /**
      * ViewModel Lifecycle
      *
      * https://developer.android.com/jetpack/androidx/releases/lifecycle
@@ -162,8 +178,7 @@ dependencies {
      *
      * https://github.com/InsertKoinIO/koin
      */
-    implementation(libs.koin.core)
     implementation(libs.koin.android)
-//    implementation(libs.koin.androidx.viewmodel)
-
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
 }

@@ -1,6 +1,6 @@
-package com.sequence.repository
+package com.sequenia.repository
 
-import com.sequence.data.FilmData
+import com.sequenia.data.FilmData
 
 interface FilmsRepository {
     suspend fun getListAllFilmsData(): List<FilmData>
