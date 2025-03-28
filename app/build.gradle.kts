@@ -157,4 +157,13 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
+    /**
+     * DI Koin
+     *
+     * https://github.com/InsertKoinIO/koin
+     */
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+//    implementation(libs.koin.androidx.viewmodel)
+
 }
