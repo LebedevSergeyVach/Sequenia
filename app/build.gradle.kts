@@ -115,4 +115,46 @@ dependencies {
      * implementation("androidx.core:core-splashscreen:1.0.1")
      */
     implementation(libs.androidx.core.splashscreen)
+
+    /**
+     * ViewModel Lifecycle
+     *
+     * https://developer.android.com/jetpack/androidx/releases/lifecycle
+     */
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    /**
+     * SkeletonLayout
+     *
+     * https://github.com/Faltenreich/SkeletonLayout
+     */
+    implementation(libs.skeletonlayout)
+
+    /**
+     * Glide
+     * BlurTransformation glide-transformations
+     *
+     * https://github.com/bumptech/glide
+     * https://github.com/wasabeef/glide-transformations
+     */
+    implementation(libs.glide)
+
+    /**
+     * Retrofit
+     *
+     * https://github.com/square/retrofit
+     * https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization
+     */
+    implementation(libs.retrofit)
+    implementation(libs.converter.kotlinx.serialization)
+
+    /**
+     * OkHttp
+     *
+     * https://github.com/square/okhttp
+     */
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
 }
