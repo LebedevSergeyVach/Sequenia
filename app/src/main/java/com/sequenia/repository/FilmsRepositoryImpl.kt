@@ -7,5 +7,5 @@ class FilmsRepositoryImpl(
     private val api: FilmsApi
 ) : FilmsRepository {
     override suspend fun getListAllFilmsData(): List<FilmData> =
-        api.getAllFilms()
+        api.getAllFilms().filmsResponses
 }

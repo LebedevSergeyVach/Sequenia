@@ -4,4 +4,9 @@
     <!-- Films -->
     <string name="films">Films</string>
     <string name="film">Film</string>
+
+    <!-- Error -->
+    <string name="network_error">Network connection error</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="repeat">REPEAT</string>
 </resources>

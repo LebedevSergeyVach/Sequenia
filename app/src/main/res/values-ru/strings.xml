@@ -3,4 +3,9 @@
     <!-- Фильмы -->
     <string name="films">Фильмы</string>
     <string name="film">Фильм</string>
+
+    <!-- Error -->
+    <string name="network_error">Ошибка подключения сети</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="repeat">ПОВТОРИТЬ</string>
 </resources>
