@@ -1,0 +1,32 @@
+<!-- res/animator/scale_animation.xml -->
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:duration="200"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:propertyName="scaleX"
+        android:valueTo="1.2"
+        android:valueType="floatType" />
+
+    <objectAnimator
+        android:duration="200"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:propertyName="scaleY"
+        android:valueTo="1.2"
+        android:valueType="floatType" />
+
+    <objectAnimator
+        android:duration="200"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:propertyName="scaleX"
+        android:startOffset="200"
+        android:valueTo="1.0"
+        android:valueType="floatType" />
+
+    <objectAnimator
+        android:duration="200"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:propertyName="scaleY"
+        android:startOffset="200"
+        android:valueTo="1.0"
+        android:valueType="floatType" />
+</set>

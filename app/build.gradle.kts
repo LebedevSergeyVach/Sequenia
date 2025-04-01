@@ -9,9 +9,6 @@ plugins {
      * Serialization
      *
      * https://github.com/Kotlin/kotlinx.serialization
-     * https://kotlinlang.org/docs/serialization.html
-     *
-     * implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
      */
     alias(libs.plugins.serialization)
 
@@ -178,7 +175,15 @@ dependencies {
      *
      * https://github.com/InsertKoinIO/koin
      */
+    implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
+
+    /**
+     * SwipeRefreshLayout
+     *
+     * https://developer.android.com/develop/ui/views/touch-and-input/swipe/add-swipe-interface
+     */
+    implementation(libs.androidx.swiperefreshlayout)
 }

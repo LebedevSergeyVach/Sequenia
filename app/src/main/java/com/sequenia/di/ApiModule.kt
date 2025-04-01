@@ -1,27 +1,27 @@
 package com.sequenia.di
 
-import com.sequenia.api.FilmsApi
 import com.sequenia.BuildConfig
+import com.sequenia.api.FilmsApi
+
 import kotlinx.serialization.json.Json
+
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
+
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.create
+
 import java.util.concurrent.TimeUnit
 
 @Module
 class ApiModule {
-
-    private companion object {
-        private val JSON_TYPE = "application/json".toMediaType()
-        private const val URL_SERVER = BuildConfig.URL_SERVER_FILM
-    }
-
-    private val json = Json {
+    @Single
+    fun provideJson(): Json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
     }
@@ -43,14 +43,22 @@ class ApiModule {
                     clientOkHttp
                 }
             }
+            .addInterceptor { chain ->
+                chain.proceed(
+                    chain.request()
+                        .newBuilder()
+                        .header("Cache-Control", "public, max-age=60")
+                        .build()
+                )
+            }
             .build()
 
     @Single
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(URL_SERVER)
-            .addConverterFactory(json.asConverterFactory(JSON_TYPE))
+            .baseUrl(BuildConfig.URL_SERVER_FILM)
+            .addConverterFactory(provideJson().asConverterFactory("application/json".toMediaType()))
             .build()
 
     @Single

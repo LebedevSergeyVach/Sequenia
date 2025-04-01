@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/root_navigation"
+    app:startDestination="@id/FilmsFragment">
+
+    <fragment
+        android:id="@+id/FilmsFragment"
+        android:name="com.sequenia.fragments.films.FilmsFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_root" />
+
+</navigation>

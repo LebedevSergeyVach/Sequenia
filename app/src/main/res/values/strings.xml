@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Films</string>
+
+    <!-- Films -->
+    <string name="films">Films</string>
+    <string name="film">Film</string>
 </resources>
