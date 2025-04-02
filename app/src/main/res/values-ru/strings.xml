@@ -3,6 +3,7 @@
     <!-- Фильмы -->
     <string name="films">Фильмы</string>
     <string name="film">Фильм</string>
+    <string name="kino_poisk">КиноПоиск</string>
 
     <!-- Error -->
     <string name="network_error">Ошибка подключения сети</string>

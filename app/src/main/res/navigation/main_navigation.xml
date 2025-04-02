@@ -9,7 +9,22 @@
     <fragment
         android:id="@+id/FilmsFragment"
         android:name="com.sequenia.fragments.films.FilmsFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_root" />
+        android:label="@string/films"
+        tools:layout="@layout/fragment_films">
+
+        <action
+            android:id="@+id/action_FilmsFragment_to_InfoFilmsFragment"
+            app:destination="@id/InfoFilmsFragment"
+
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/InfoFilmsFragment"
+        android:name="com.sequenia.fragments.films.InfoFilmFragment"
+        tools:layout="@layout/fragment_info_film" />
 
 </navigation>

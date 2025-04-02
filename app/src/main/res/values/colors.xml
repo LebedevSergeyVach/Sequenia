@@ -20,4 +20,5 @@
     <color name="swipe_refresh">@color/secondary_element</color>
     <color name="placeholder_films_gray">#EFEFEF</color>
     <color name="placeholder_films_gray_image">#CBCBCB</color>
+    <color name="text_genre_list_and_release_year">#4B4B4B</color>
 </resources>
