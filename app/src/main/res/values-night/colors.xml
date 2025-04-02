@@ -3,4 +3,6 @@
     <color name="background_color_of_the_refresh_circle">#141218</color>
     <color name="inversion_black_white_theme">@color/white</color>
     <color name="splash_screen">@color/black</color>
+    <color name="placeholder_films_gray">#1B1B1B</color>
+    <color name="placeholder_films_gray_image">#414141</color>
 </resources>

@@ -22,6 +22,7 @@
 
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:paddingHorizontal="12dp"
 
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 

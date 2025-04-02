@@ -7,13 +7,17 @@
     <color name="gray">#545454</color>
     <color name="gray_element">#49454f</color>
 
-    <color name="active_element">#0e3165</color>
+    <color name="primary_element">#0e3165</color>
+    <color name="secondary_element">#FFC967</color>
 
-    <color name="status_bar">@color/active_element</color>
-    <color name="toolbar">@color/active_element</color>
+    <color name="status_bar">@color/primary_element</color>
+    <color name="toolbar">@color/primary_element</color>
 
     <color name="background_color_of_the_refresh_circle">#f8f9fc</color>
     <color name="inversion_black_white_theme">@color/black</color>
     <color name="splash_screen">@color/white</color>
-    <color name="circular_progress">#FFC967</color>
+    <color name="circular_progress">@color/secondary_element</color>
+    <color name="swipe_refresh">@color/secondary_element</color>
+    <color name="placeholder_films_gray">#EFEFEF</color>
+    <color name="placeholder_films_gray_image">#CBCBCB</color>
 </resources>
