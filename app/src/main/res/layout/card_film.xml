@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/card_film"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    app:cardCornerRadius="0dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_attachment"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            app:cardCornerRadius="4dp"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            app:strokeWidth="0dp">
+
+            <com.faltenreich.skeletonlayout.SkeletonLayout
+                android:id="@+id/skeleton_attachment"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:maskColor="@color/placeholder_films_gray"
+                app:maskCornerRadius="4dp"
+                app:shimmerAngle="10"
+                app:shimmerColor="@color/primary_element"
+                app:shimmerDurationInMillis="1500">
+
+                <ImageView
+                    android:id="@+id/image_film_attachment"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/film"
+
+                    tools:src="@tools:sample/backgrounds/scenic[10]" />
+
+            </com.faltenreich.skeletonlayout.SkeletonLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/text_name_film"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="16sp"
+            android:textStyle="bold"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_attachment"
+
+            tools:text="@tools:sample/lorem/random" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

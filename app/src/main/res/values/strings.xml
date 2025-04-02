@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name" translatable="false">Films</string>
+
+    <!-- Films -->
+    <string name="films">Films</string>
+    <string name="film">Film</string>
+    <string name="kino_poisk">KinoPoisk</string>
+
+    <!-- Error -->
+    <string name="network_error">Network connection error</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="repeat">REPEAT</string>
 </resources>

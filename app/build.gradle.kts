@@ -9,11 +9,15 @@ plugins {
      * Serialization
      *
      * https://github.com/Kotlin/kotlinx.serialization
-     * https://kotlinlang.org/docs/serialization.html
-     *
-     * implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
      */
     alias(libs.plugins.serialization)
+
+    /**
+     * KSP - Kotlin Symbol Processing API
+     *
+     * https://github.com/google/ksp
+     */
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -115,4 +119,71 @@ dependencies {
      * implementation("androidx.core:core-splashscreen:1.0.1")
      */
     implementation(libs.androidx.core.splashscreen)
+
+    /**
+     * Android Jetpack's Navigation component
+     *
+     * https://developer.android.com/guide/navigation
+     *
+     */
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui)
+
+    /**
+     * ViewModel Lifecycle
+     *
+     * https://developer.android.com/jetpack/androidx/releases/lifecycle
+     */
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
+    /**
+     * SkeletonLayout
+     *
+     * https://github.com/Faltenreich/SkeletonLayout
+     */
+    implementation(libs.skeletonlayout)
+
+    /**
+     * Glide
+     * BlurTransformation glide-transformations
+     *
+     * https://github.com/bumptech/glide
+     * https://github.com/wasabeef/glide-transformations
+     */
+    implementation(libs.glide)
+
+    /**
+     * Retrofit
+     *
+     * https://github.com/square/retrofit
+     * https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization
+     */
+    implementation(libs.retrofit)
+    implementation(libs.converter.kotlinx.serialization)
+
+    /**
+     * OkHttp
+     *
+     * https://github.com/square/okhttp
+     */
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    /**
+     * DI Koin
+     *
+     * https://github.com/InsertKoinIO/koin
+     */
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.ksp.compiler)
+
+    /**
+     * SwipeRefreshLayout
+     *
+     * https://developer.android.com/develop/ui/views/touch-and-input/swipe/add-swipe-interface
+     */
+    implementation(libs.androidx.swiperefreshlayout)
 }

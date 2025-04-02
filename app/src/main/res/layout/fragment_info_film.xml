@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".fragments.films.InfoFilmFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/layout_margin_horizontal_text_info_film_16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_attachment"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="114dp"
+            android:layout_marginTop="24dp"
+
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="0dp">
+
+            <com.faltenreich.skeletonlayout.SkeletonLayout
+                android:id="@+id/skeleton_attachment"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                app:maskColor="@color/placeholder_films_gray"
+                app:maskCornerRadius="4dp"
+                app:shimmerAngle="10"
+                app:shimmerColor="@color/primary_element"
+                app:shimmerDurationInMillis="1500">
+
+                <ImageView
+                    android:id="@+id/image_film_attachment"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/film"
+
+                    tools:src="@tools:sample/backgrounds/scenic[10]" />
+
+            </com.faltenreich.skeletonlayout.SkeletonLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/text_name_film"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/layout_margin_horizontal_text_info_film_16dp"
+            android:layout_marginTop="24dp"
+
+            android:textColor="@color/inversion_black_white_theme"
+            android:textSize="26sp"
+            android:textStyle="bold"
+
+            tools:text="Между нами горы " />
+
+        <TextView
+            android:id="@+id/text_genre_list_and_release_year"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/layout_margin_horizontal_text_info_film_16dp"
+            android:layout_marginTop="8dp"
+
+            android:textColor="@color/text_genre_list_and_release_year"
+            android:textSize="16sp"
+
+            tools:text="драма, 2017 год" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/layout_margin_horizontal_text_info_film_16dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_rating"
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:textColor="@color/primary_element"
+                android:textSize="24sp"
+                android:textStyle="bold"
+
+                tools:text="6.7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="3dp"
+
+                android:gravity="bottom"
+                android:text="@string/kino_poisk"
+                android:textColor="@color/primary_element"
+                android:textSize="16sp"
+                android:textStyle="bold"
+
+                tools:text="КиноПоиск" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_description"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/layout_margin_horizontal_text_info_film_16dp"
+            android:layout_marginTop="14dp"
+
+            android:textColor="@color/inversion_black_white_theme"
+            android:textSize="14sp"
+
+            tools:text="Бен и Алекс, уцелевшие после авиакатастрофы, должны найти общий язык, чтобы выжить в экстремальных условиях далеких заснеженных гор. Когда они понимают, что на помощь к ним никто не придет, они вынуждены отправиться в опасный путь длиной в сотни километров. В заснеженных американских горах им придётся проходить через все ужасы выживания: серьёзные травмы, невозможность связаться с внешним миром, нападение диких животных. В борьбе за жизнь между двумя еще вчера незнакомыми людьми неожиданно возникает притяжение. " />
+
+    </LinearLayout>
+</ScrollView>

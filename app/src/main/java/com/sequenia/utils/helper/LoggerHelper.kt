@@ -1,4 +1,4 @@
-package com.sequence.utils.helper
+package com.sequenia.utils.helper
 
 import android.util.Log
 

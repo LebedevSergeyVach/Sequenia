@@ -1,4 +1,4 @@
-package com.sequence.utils.common
+package com.sequenia.utils.common
 
 import android.view.View
 

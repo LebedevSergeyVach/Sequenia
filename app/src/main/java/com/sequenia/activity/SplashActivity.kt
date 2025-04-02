@@ -1,4 +1,4 @@
-package com.sequence.activity
+package com.sequenia.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
