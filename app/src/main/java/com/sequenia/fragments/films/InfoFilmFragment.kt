@@ -2,12 +2,14 @@ package com.sequenia.fragments.films
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -15,8 +17,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+
 import com.sequenia.R
 import com.sequenia.databinding.FragmentInfoFilmBinding
+
 import java.util.Locale
 
 class InfoFilmFragment : Fragment() {
@@ -57,9 +61,18 @@ class InfoFilmFragment : Fragment() {
         binding.textRating.text = String.format(Locale.US, "%.1f", rating)
         binding.textDescription.text = description
 
-        val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
-        toolbar.title = name
 
+        renderingImageAttachmentPoster(binding = binding, imageUrl = imageUrl)
+
+        controlToolbar(name = name)
+
+        return binding.root
+    }
+
+    private fun renderingImageAttachmentPoster(
+        binding: FragmentInfoFilmBinding,
+        imageUrl: String
+    ) {
         binding.skeletonAttachment.showSkeleton()
 
         Glide.with(binding.root)
@@ -99,7 +112,10 @@ class InfoFilmFragment : Fragment() {
                 }
             })
             .into(binding.imageFilmAttachment)
+    }
 
-        return binding.root
+    private fun controlToolbar(name: String) {
+        val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
+        toolbar.title = name
     }
 }
