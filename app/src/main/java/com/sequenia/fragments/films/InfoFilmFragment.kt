@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -37,18 +38,20 @@ class InfoFilmFragment : Fragment() {
     ): View {
         val binding = FragmentInfoFilmBinding.inflate(inflater, container, false)
 
-        val localizedName: String? = arguments?.getString(LOCALIZED_NAME) ?: ""
-        val name: String? = arguments?.getString(NAME) ?: ""
-        val year: Int? = arguments?.getInt(YEAR) ?: 0
-        val rating: Float? = arguments?.getFloat(RATING) ?: 0F
-        val imageUrl: String? = arguments?.getString(IMAGE_URL) ?: ""
-        val description: String? = arguments?.getString(DESCRIPTION) ?: ""
-        val genres: List<String>? = arguments?.getStringArrayList(GENRES) ?: emptyList()
+        val localizedName: String = arguments?.getString(LOCALIZED_NAME) ?: ""
+        val name: String = arguments?.getString(NAME) ?: ""
+        val year: Int = arguments?.getInt(YEAR) ?: 0
+        val rating: Float = arguments?.getFloat(RATING) ?: 0F
+        val imageUrl: String = arguments?.getString(IMAGE_URL) ?: ""
+        val description: String = arguments?.getString(DESCRIPTION) ?: ""
+        val genres: List<String> = arguments?.getStringArrayList(GENRES) ?: emptyList()
 
         binding.textNameFilm.text = localizedName
         binding.textGenreListAndReleaseYear.text = buildString {
-            append(genres?.joinToString(" ") ?: "")
-            append(", ")
+            append(genres.joinToString(" "))
+            if (genres.isNotEmpty()) {
+                append(", ")
+            }
             append(year)
         }
         binding.textRating.text = String.format(Locale.US, "%.1f", rating)

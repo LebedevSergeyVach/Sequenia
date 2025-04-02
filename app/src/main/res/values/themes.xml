@@ -3,7 +3,13 @@
     <style name="Base.Theme.Sequenia" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="drawerArrowStyle">@style/Theme.Sequenia.DrawerArrowStyle</item>
     </style>
 
     <style name="Theme.Sequenia" parent="Base.Theme.Sequenia" />
+
+    <style name="Theme.Sequenia.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/white</item>
+        <item name="spinBars">true</item>
+    </style>
 </resources>
