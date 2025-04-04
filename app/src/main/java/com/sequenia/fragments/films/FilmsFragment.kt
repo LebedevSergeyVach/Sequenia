@@ -5,33 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-
+import androidx.recyclerview.widget.GridLayoutManager
 import com.sequenia.R
-import com.sequenia.adapter.FilmAdapter
+import com.sequenia.adapter.main.MainAdapter
 import com.sequenia.data.FilmData
 import com.sequenia.databinding.FragmentFilmsBinding
-import com.sequenia.ui.OffsetDecoration
+import com.sequenia.ui.mapper.MainScreenMapperImpl
+import com.sequenia.ui.offset.FilmItemOffsetDecoration
 import com.sequenia.utils.extensions.ErrorUtils.getErrorText
 import com.sequenia.utils.extensions.singleVibrationWithSystemCheck
 import com.sequenia.viewmodel.FilmsState
 import com.sequenia.viewmodel.FilmsViewModel
-
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FilmsFragment : Fragment() {
@@ -52,9 +46,11 @@ class FilmsFragment : Fragment() {
         return binding.root
     }
 
-    private fun createFilmAdapter(): FilmAdapter = FilmAdapter(
-        listener = object : FilmAdapter.FilmListener {
+    private fun createFilmAdapter(): MainAdapter = MainAdapter(
+        listener = object : MainAdapter.FilmListener {
             override fun onGetInfoFilmClicked(film: FilmData) {
+                requireContext().singleVibrationWithSystemCheck(35)
+
                 requireParentFragment().findNavController()
                     .navigate(
                         R.id.action_FilmsFragment_to_InfoFilmsFragment,
@@ -80,12 +76,33 @@ class FilmsFragment : Fragment() {
 
     private fun controlSettingsFilmsRecyclerView(
         binding: FragmentFilmsBinding,
-        adapter: FilmAdapter
+        adapter: MainAdapter
     ) {
         binding.filmsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when (adapter.getItemViewType(position)) {
+                        MainAdapter.TYPE_HEADER -> 2
+                        MainAdapter.TYPE_GENRE -> 2
+                        MainAdapter.TYPE_FILM -> 1
+                        else -> {
+                            val error =
+                                "FilmsFragment: Invalid view type ${adapter.getItemViewType(position)}"
+                            error(error)
+                            throw IllegalArgumentException(error)
+                        }
+                    }
+                }
+            }
+
             val spacing = resources.getDimensionPixelSize(R.dimen.item_spacing_card_films)
-            binding.filmsRecyclerView.addItemDecoration(OffsetDecoration(spacing))
+            binding.filmsRecyclerView.addItemDecoration(
+                FilmItemOffsetDecoration(
+                    spacing = spacing,
+                )
+            )
         }
+
         binding.filmsRecyclerView.adapter = adapter
     }
 
@@ -106,7 +123,7 @@ class FilmsFragment : Fragment() {
 
     private fun observedStateViewModel(
         binding: FragmentFilmsBinding,
-        adapter: FilmAdapter
+        adapter: MainAdapter,
     ) {
         viewModelFilms.state
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
@@ -123,7 +140,12 @@ class FilmsFragment : Fragment() {
                 }
 
                 adapter.submitList(
-                    stateFilms.films
+                    MainScreenMapperImpl.map(
+                        genres = viewModelFilms.getGenres(),
+                        films = stateFilms.films,
+                        genresTitle = getString(R.string.genres),
+                        filmsTitle = getString(R.string.films)
+                    )
                 )
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
