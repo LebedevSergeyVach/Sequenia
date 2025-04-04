@@ -3,6 +3,7 @@
     <!-- Фильмы -->
     <string name="films">Фильмы</string>
     <string name="film">Фильм</string>
+    <string name="genres">Жанры</string>
     <string name="kino_poisk">КиноПоиск</string>
 
     <!-- Error -->

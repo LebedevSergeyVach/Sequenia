@@ -1,0 +1,15 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:id="@+id/item_header_separator"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="10dp"
+
+    android:textColor="@color/inversion_black_white_theme"
+    android:textSize="16sp"
+
+    tools:background="@color/secondary_element"
+    tools:text="Приключения" />
