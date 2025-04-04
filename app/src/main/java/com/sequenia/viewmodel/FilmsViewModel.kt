@@ -2,18 +2,16 @@ package com.sequenia.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.sequenia.BuildConfig
 import com.sequenia.data.FilmData
+import com.sequenia.data.GenreData
 import com.sequenia.repository.FilmsRepository
 import com.sequenia.utils.helper.LoggerHelper
-
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
@@ -61,6 +59,23 @@ class FilmsViewModel(
                 if (BuildConfig.DEBUG) LoggerHelper.e("ERROR ViewModel: $e")
             }
         }
+    }
+
+    fun getGenres(): List<GenreData> {
+        return listOf(
+            GenreData("Биография"),
+            GenreData("Боевик"),
+            GenreData("Детектив"),
+            GenreData("Драма"),
+            GenreData("Комедия"),
+            GenreData("Криминал"),
+            GenreData("Мелодрама"),
+            GenreData("Мюзикл"),
+            GenreData("Приключения"),
+            GenreData("Триллер"),
+            GenreData("Ужасы"),
+            GenreData("Фантастика"),
+        )
     }
 
     fun consumerError() {
