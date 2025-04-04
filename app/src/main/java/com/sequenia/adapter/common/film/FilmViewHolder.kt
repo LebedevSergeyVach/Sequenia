@@ -1,8 +1,7 @@
-package com.sequenia.adapter
+package com.sequenia.adapter.common.film
 
 import android.graphics.drawable.Drawable
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -10,15 +9,14 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-
 import com.sequenia.R
 import com.sequenia.data.FilmData
 import com.sequenia.databinding.CardFilmBinding
 
 class FilmViewHolder(
     private val binding: CardFilmBinding,
-) : ViewHolder(binding.root) {
-    fun bindFilms(film: FilmData) {
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(film: FilmData) {
         binding.textNameFilm.text = film.localizedName
 
         renderingImageAttachmentPoster(film = film)
