@@ -1,10 +1,14 @@
 package com.sequenia.fragments.films
 
+import android.app.Activity
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -14,19 +18,26 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.snackbar.Snackbar
+import com.sequenia.BuildConfig
 import com.sequenia.R
 import com.sequenia.adapter.main.MainAdapter
-import com.sequenia.data.FilmData
+import com.sequenia.data.film.FilmData
 import com.sequenia.databinding.FragmentFilmsBinding
 import com.sequenia.ui.mapper.MainScreenMapperImpl
 import com.sequenia.ui.offset.FilmItemOffsetDecoration
 import com.sequenia.utils.extensions.ErrorUtils.getErrorText
+import com.sequenia.utils.extensions.dpToPx
 import com.sequenia.utils.extensions.singleVibrationWithSystemCheck
+import com.sequenia.utils.helper.LoggerHelper
 import com.sequenia.viewmodel.FilmsState
 import com.sequenia.viewmodel.FilmsViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.graphics.drawable.toDrawable
 
 class FilmsFragment : Fragment() {
 
@@ -40,7 +51,6 @@ class FilmsFragment : Fragment() {
         val adapter = createFilmAdapter()
 
         controlSettingsFilmsRecyclerView(binding = binding, adapter = adapter)
-        controlSettingsSwiperRefresh(binding = binding)
         observedStateViewModel(binding = binding, adapter = adapter)
 
         return binding.root
@@ -71,6 +81,12 @@ class FilmsFragment : Fragment() {
                             .build()
                     )
             }
+
+            override fun onGenreClicked(genre: String) {
+                requireContext().singleVibrationWithSystemCheck(35)
+
+                viewModelFilms.toggleGenre(genre)
+            }
         }
     )
 
@@ -81,13 +97,22 @@ class FilmsFragment : Fragment() {
         binding.filmsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
+                    if (position == RecyclerView.NO_POSITION) return 1
+
                     return when (adapter.getItemViewType(position)) {
                         MainAdapter.TYPE_HEADER -> 2
                         MainAdapter.TYPE_GENRE -> 2
                         MainAdapter.TYPE_FILM -> 1
                         else -> {
                             val error =
-                                "FilmsFragment: Invalid view type ${adapter.getItemViewType(position)}"
+                                "FilmsFragment.controlSettingsFilmsRecyclerView: Invalid view type ${
+                                    adapter.getItemViewType(
+                                        position
+                                    )
+                                }"
+
+                            if (BuildConfig.DEBUG) LoggerHelper.e(error)
+
                             error(error)
                             throw IllegalArgumentException(error)
                         }
@@ -98,27 +123,12 @@ class FilmsFragment : Fragment() {
             val spacing = resources.getDimensionPixelSize(R.dimen.item_spacing_card_films)
             binding.filmsRecyclerView.addItemDecoration(
                 FilmItemOffsetDecoration(
-                    spacing = spacing,
+                    itemSpacing = spacing,
                 )
             )
         }
 
         binding.filmsRecyclerView.adapter = adapter
-    }
-
-    private fun controlSettingsSwiperRefresh(binding: FragmentFilmsBinding) {
-        binding.swiperRefresh.setOnRefreshListener {
-            viewModelFilms.loadFilms()
-            requireContext().singleVibrationWithSystemCheck(35)
-        }
-
-        binding.swiperRefresh.setColorSchemeColors(
-            ContextCompat.getColor(requireContext(), R.color.swipe_refresh)
-        )
-
-        binding.swiperRefresh.setProgressBackgroundColorSchemeColor(
-            ContextCompat.getColor(requireContext(), R.color.background_color_of_the_refresh_circle)
-        )
     }
 
     private fun observedStateViewModel(
@@ -128,26 +138,78 @@ class FilmsFragment : Fragment() {
         viewModelFilms.state
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { stateFilms: FilmsState ->
-                binding.swiperRefresh.isRefreshing = stateFilms.isRefreshing
                 binding.progressBar.isVisible = stateFilms.isEmptyLoading
+                binding.filmsRecyclerView.isVisible =
+                    !stateFilms.isEmptyError && !stateFilms.isEmptyLoading
 
-                val errorText: CharSequence? =
-                    stateFilms.statusFilmsState.throwableOrNull?.getErrorText(requireContext())
+                stateFilms.statusFilmsState.throwableOrNull?.let { error: Throwable ->
+                    showErrorMaterialSnackbar(
+                        binding = binding,
+                        message = error.getErrorText(requireContext()).toString(),
+                        retryAction = {
+                            requireContext().singleVibrationWithSystemCheck(35)
 
-                errorText?.let {
-                    Toast.makeText(requireContext(), errorText, Toast.LENGTH_SHORT).show()
-                    viewModelFilms.consumerError()
+                            viewModelFilms.load()
+                        },
+                    )
                 }
 
                 adapter.submitList(
                     MainScreenMapperImpl.map(
-                        genres = viewModelFilms.getGenres(),
+                        genres = viewModelFilms.getAvailableGenres(),
                         films = stateFilms.films,
+                        selectedGenre = stateFilms.genre,
                         genresTitle = getString(R.string.genres),
                         filmsTitle = getString(R.string.films)
                     )
                 )
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun showErrorMaterialSnackbar(
+        binding: FragmentFilmsBinding, message: String, retryAction: () -> Unit,
+    ) {
+        Snackbar.make(
+            binding.root, message, Snackbar.LENGTH_INDEFINITE
+        ).apply {
+            view.backgroundTintList = null
+
+            view.background = MaterialShapeDrawable().apply {
+                fillColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.snackbar_background)
+                )
+                setCornerSize(2f.dpToPx(requireContext()))
+            }
+
+            setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+
+            setAction(R.string.repeat) {
+                retryAction()
+                dismiss()
+            }
+
+            setActionTextColor(ContextCompat.getColor(requireContext(), R.color.secondary_element))
+
+            (context as? Activity)?.window?.setWindowAnimations(R.style.SnackbarAnimation)
+
+            addCallback(object : Snackbar.Callback() {
+                override fun onShown(sb: Snackbar?) {
+                    super.onShown(sb)
+                    view.findViewById<Button>(com.google.android.material.R.id.snackbar_action)
+                        ?.apply {
+//                            background = null // Полностью отключаем фон
+//                             ИЛИ заменяем на прозрачный цвет:
+//                             background = Color.TRANSPARENT.toDrawable()
+                            background = ContextCompat.getColor(binding.root.context, R.color.primary_element).toDrawable()
+                        }
+                }
+            })
+        }.show()
     }
 }
