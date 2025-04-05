@@ -18,6 +18,9 @@
     <color name="splash_screen">@color/white</color>
     <color name="circular_progress">@color/secondary_element</color>
     <color name="swipe_refresh">@color/secondary_element</color>
+    <color name="background_card_genre">@color/secondary_element</color>
+    <color name="text_color_retry_action_snackbar">@color/secondary_element</color>
+    <color name="snackbar_background">#232323</color>
     <color name="placeholder_films_gray">#EFEFEF</color>
     <color name="placeholder_films_gray_image">#CBCBCB</color>
     <color name="text_genre_list_and_release_year">#4B4B4B</color>

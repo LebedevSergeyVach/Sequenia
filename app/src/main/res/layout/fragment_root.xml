@@ -16,7 +16,6 @@
         android:layout_height="wrap_content"
 
         android:background="@color/toolbar"
-        android:elevation="10dp"
         android:textStyle="bold"
 
         app:title="@string/films"
