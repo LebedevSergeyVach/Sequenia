@@ -3,8 +3,7 @@ package com.sequenia.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sequenia.BuildConfig
-import com.sequenia.data.FilmData
-import com.sequenia.data.GenreData
+import com.sequenia.data.film.FilmData
 import com.sequenia.repository.FilmsRepository
 import com.sequenia.utils.helper.LoggerHelper
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,11 +21,13 @@ class FilmsViewModel(
     private val _state: MutableStateFlow<FilmsState> = MutableStateFlow(FilmsState())
     val state: StateFlow<FilmsState> = _state.asStateFlow()
 
+    private var films: List<FilmData> = emptyList()
+
     init {
-        loadFilms()
+        load()
     }
 
-    fun loadFilms() {
+    fun load() {
         getListAllFilmsData()
     }
 
@@ -39,14 +40,17 @@ class FilmsViewModel(
 
         viewModelScope.launch {
             try {
-                val films: List<FilmData> = repository.getListAllFilmsData()
+                films = repository.getListAllFilmsData()
+                    .sortedBy { film: FilmData ->
+                        film.localizedName
+                    }
 
                 if (BuildConfig.DEBUG) LoggerHelper.d("ViewModel: $films")
 
                 _state.update { filmsState: FilmsState ->
                     filmsState.copy(
+                        films = applyGenreFilter(films, _state.value.genre),
                         statusFilmsState = StatusLoad.Idle,
-                        films = films,
                     )
                 }
             } catch (e: Exception) {
@@ -61,21 +65,35 @@ class FilmsViewModel(
         }
     }
 
-    fun getGenres(): List<GenreData> {
-        return listOf(
-            GenreData("Биография"),
-            GenreData("Боевик"),
-            GenreData("Детектив"),
-            GenreData("Драма"),
-            GenreData("Комедия"),
-            GenreData("Криминал"),
-            GenreData("Мелодрама"),
-            GenreData("Мюзикл"),
-            GenreData("Приключения"),
-            GenreData("Триллер"),
-            GenreData("Ужасы"),
-            GenreData("Фантастика"),
-        )
+    fun toggleGenre(genre: String?) {
+        val newGenre = if (_state.value.genre == genre) null else genre
+        _state.update {
+            it.copy(
+                genre = newGenre,
+                films = applyGenreFilter(films, newGenre)
+            )
+        }
+    }
+
+    private fun applyGenreFilter(
+        films: List<FilmData>,
+        genre: String?
+    ): List<FilmData> {
+        return if (genre == null) {
+            films
+        } else {
+            films.filter { film ->
+                film.genres.any { it.equals(genre, ignoreCase = true) }
+            }
+        }
+    }
+
+    fun getAvailableGenres(): List<String> {
+        return films
+            .flatMap { it.genres }
+            .distinct()
+            .map { genre -> genre.replaceFirstChar { it.uppercase() } }
+            .sorted()
     }
 
     fun consumerError() {
