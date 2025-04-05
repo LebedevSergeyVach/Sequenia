@@ -1,15 +1,15 @@
 package com.sequenia.ui.mapper
 
 import com.sequenia.adapter.main.MainScreenItem
-import com.sequenia.data.FilmData
-import com.sequenia.data.GenreData
+import com.sequenia.data.film.FilmData
 
 interface MainScreenMapper {
 
     fun map(
-        genres: List<GenreData>,
+        genres: List<String>,
         films: List<FilmData>?,
+        selectedGenre: String?,
         genresTitle: String,
-        filmsTitle: String
+        filmsTitle: String,
     ): List<MainScreenItem>
 }

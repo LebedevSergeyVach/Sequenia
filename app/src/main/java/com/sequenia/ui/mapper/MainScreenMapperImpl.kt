@@ -1,19 +1,27 @@
 package com.sequenia.ui.mapper
 
 import com.sequenia.adapter.main.MainScreenItem
-import com.sequenia.data.FilmData
-import com.sequenia.data.GenreData
+import com.sequenia.data.film.FilmData
 
 object MainScreenMapperImpl : MainScreenMapper {
 
     override fun map(
-        genres: List<GenreData>, films: List<FilmData>?, genresTitle: String, filmsTitle: String
+        genres: List<String>,
+        films: List<FilmData>?,
+        selectedGenre: String?,
+        genresTitle: String,
+        filmsTitle: String,
     ): List<MainScreenItem> {
         return mutableListOf<MainScreenItem>().apply {
             add(MainScreenItem.Header(title = genresTitle))
 
-            genres.forEachIndexed { index: Int, genre: GenreData ->
-                add(MainScreenItem.Genre(name = genre.name, id = index))
+            genres.forEach { genre: String ->
+                add(
+                    MainScreenItem.Genre(
+                        name = genre,
+                        isSelected = genre.equals(other = selectedGenre, ignoreCase = true)
+                    )
+                )
             }
 
             add(MainScreenItem.Header(title = filmsTitle))
