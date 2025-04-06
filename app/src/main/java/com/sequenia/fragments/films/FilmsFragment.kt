@@ -1,26 +1,25 @@
 package com.sequenia.fragments.films
 
-import android.app.Activity
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.core.content.ContextCompat
+
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+
 import androidx.fragment.app.Fragment
+
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.snackbar.Snackbar
+
 import com.sequenia.BuildConfig
 import com.sequenia.R
 import com.sequenia.adapter.main.MainAdapter
@@ -29,15 +28,16 @@ import com.sequenia.databinding.FragmentFilmsBinding
 import com.sequenia.ui.mapper.MainScreenMapperImpl
 import com.sequenia.ui.offset.FilmItemOffsetDecoration
 import com.sequenia.utils.extensions.ErrorUtils.getErrorText
-import com.sequenia.utils.extensions.dpToPx
+import com.sequenia.utils.extensions.showErrorMaterialSnackbar
 import com.sequenia.utils.extensions.singleVibrationWithSystemCheck
 import com.sequenia.utils.helper.LoggerHelper
 import com.sequenia.viewmodel.FilmsState
 import com.sequenia.viewmodel.FilmsViewModel
+
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.graphics.drawable.toDrawable
 
 class FilmsFragment : Fragment() {
 
@@ -143,7 +143,7 @@ class FilmsFragment : Fragment() {
                     !stateFilms.isEmptyError && !stateFilms.isEmptyLoading
 
                 stateFilms.statusFilmsState.throwableOrNull?.let { error: Throwable ->
-                    showErrorMaterialSnackbar(
+                    requireContext().showErrorMaterialSnackbar(
                         binding = binding,
                         message = error.getErrorText(requireContext()).toString(),
                         retryAction = {
@@ -165,51 +165,5 @@ class FilmsFragment : Fragment() {
                 )
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
-    }
-
-    private fun showErrorMaterialSnackbar(
-        binding: FragmentFilmsBinding, message: String, retryAction: () -> Unit,
-    ) {
-        Snackbar.make(
-            binding.root, message, Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            view.backgroundTintList = null
-
-            view.background = MaterialShapeDrawable().apply {
-                fillColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.snackbar_background)
-                )
-                setCornerSize(2f.dpToPx(requireContext()))
-            }
-
-            setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-
-            setAction(R.string.repeat) {
-                retryAction()
-                dismiss()
-            }
-
-            setActionTextColor(ContextCompat.getColor(requireContext(), R.color.secondary_element))
-
-            (context as? Activity)?.window?.setWindowAnimations(R.style.SnackbarAnimation)
-
-            addCallback(object : Snackbar.Callback() {
-                override fun onShown(sb: Snackbar?) {
-                    super.onShown(sb)
-                    view.findViewById<Button>(com.google.android.material.R.id.snackbar_action)
-                        ?.apply {
-//                            background = null // Полностью отключаем фон
-//                             ИЛИ заменяем на прозрачный цвет:
-//                             background = Color.TRANSPARENT.toDrawable()
-                            background = ContextCompat.getColor(binding.root.context, R.color.primary_element).toDrawable()
-                        }
-                }
-            })
-        }.show()
     }
 }

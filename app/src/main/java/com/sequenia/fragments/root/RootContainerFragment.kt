@@ -40,10 +40,8 @@ class RootContainerFragment : Fragment() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id != R.id.FilmsFragment) {
                 binding.toolbar.navigationIcon = AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_arrow_24
-                )
-                    ?.apply {
+                    requireContext(), R.drawable.ic_arrow_24
+                )?.apply {
                     setTint(ContextCompat.getColor(requireContext(), R.color.white))
                 }
             }
