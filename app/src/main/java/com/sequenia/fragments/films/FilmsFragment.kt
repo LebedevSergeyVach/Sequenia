@@ -1,17 +1,15 @@
 package com.sequenia.fragments.films
 
 import android.os.Bundle
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -19,13 +17,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
+import com.sequenia.BuildConfig
 import com.sequenia.R
-import com.sequenia.adapter.FilmAdapter
-import com.sequenia.data.FilmData
+import com.sequenia.adapter.main.MainAdapter
+import com.sequenia.data.film.FilmData
 import com.sequenia.databinding.FragmentFilmsBinding
-import com.sequenia.ui.OffsetDecoration
+import com.sequenia.ui.mapper.MainScreenMapperImpl
+import com.sequenia.ui.offset.FilmItemOffsetDecoration
 import com.sequenia.utils.extensions.ErrorUtils.getErrorText
+import com.sequenia.utils.extensions.showErrorMaterialSnackbar
 import com.sequenia.utils.extensions.singleVibrationWithSystemCheck
+import com.sequenia.utils.helper.LoggerHelper
 import com.sequenia.viewmodel.FilmsState
 import com.sequenia.viewmodel.FilmsViewModel
 
@@ -46,15 +51,16 @@ class FilmsFragment : Fragment() {
         val adapter = createFilmAdapter()
 
         controlSettingsFilmsRecyclerView(binding = binding, adapter = adapter)
-        controlSettingsSwiperRefresh(binding = binding)
         observedStateViewModel(binding = binding, adapter = adapter)
 
         return binding.root
     }
 
-    private fun createFilmAdapter(): FilmAdapter = FilmAdapter(
-        listener = object : FilmAdapter.FilmListener {
+    private fun createFilmAdapter(): MainAdapter = MainAdapter(
+        listener = object : MainAdapter.FilmListener {
             override fun onGetInfoFilmClicked(film: FilmData) {
+                requireContext().singleVibrationWithSystemCheck(35)
+
                 requireParentFragment().findNavController()
                     .navigate(
                         R.id.action_FilmsFragment_to_InfoFilmsFragment,
@@ -75,55 +81,87 @@ class FilmsFragment : Fragment() {
                             .build()
                     )
             }
+
+            override fun onGenreClicked(genre: String) {
+                requireContext().singleVibrationWithSystemCheck(35)
+
+                viewModelFilms.toggleGenre(genre)
+            }
         }
     )
 
     private fun controlSettingsFilmsRecyclerView(
         binding: FragmentFilmsBinding,
-        adapter: FilmAdapter
+        adapter: MainAdapter
     ) {
         binding.filmsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2).apply {
+            spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    if (position == RecyclerView.NO_POSITION) return 1
+
+                    return when (adapter.getItemViewType(position)) {
+                        MainAdapter.TYPE_HEADER -> 2
+                        MainAdapter.TYPE_GENRE -> 2
+                        MainAdapter.TYPE_FILM -> 1
+                        else -> {
+                            val error =
+                                "FilmsFragment.controlSettingsFilmsRecyclerView: Invalid view type ${
+                                    adapter.getItemViewType(
+                                        position
+                                    )
+                                }"
+
+                            if (BuildConfig.DEBUG) LoggerHelper.e(error)
+
+                            error(error)
+                            throw IllegalArgumentException(error)
+                        }
+                    }
+                }
+            }
+
             val spacing = resources.getDimensionPixelSize(R.dimen.item_spacing_card_films)
-            binding.filmsRecyclerView.addItemDecoration(OffsetDecoration(spacing))
+            binding.filmsRecyclerView.addItemDecoration(
+                FilmItemOffsetDecoration(
+                    itemSpacing = spacing,
+                )
+            )
         }
+
         binding.filmsRecyclerView.adapter = adapter
-    }
-
-    private fun controlSettingsSwiperRefresh(binding: FragmentFilmsBinding) {
-        binding.swiperRefresh.setOnRefreshListener {
-            viewModelFilms.loadFilms()
-            requireContext().singleVibrationWithSystemCheck(35)
-        }
-
-        binding.swiperRefresh.setColorSchemeColors(
-            ContextCompat.getColor(requireContext(), R.color.swipe_refresh)
-        )
-
-        binding.swiperRefresh.setProgressBackgroundColorSchemeColor(
-            ContextCompat.getColor(requireContext(), R.color.background_color_of_the_refresh_circle)
-        )
     }
 
     private fun observedStateViewModel(
         binding: FragmentFilmsBinding,
-        adapter: FilmAdapter
+        adapter: MainAdapter,
     ) {
         viewModelFilms.state
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { stateFilms: FilmsState ->
-                binding.swiperRefresh.isRefreshing = stateFilms.isRefreshing
                 binding.progressBar.isVisible = stateFilms.isEmptyLoading
+                binding.filmsRecyclerView.isVisible =
+                    !stateFilms.isEmptyError && !stateFilms.isEmptyLoading
 
-                val errorText: CharSequence? =
-                    stateFilms.statusFilmsState.throwableOrNull?.getErrorText(requireContext())
+                stateFilms.statusFilmsState.throwableOrNull?.let { error: Throwable ->
+                    requireContext().showErrorMaterialSnackbar(
+                        binding = binding,
+                        message = error.getErrorText(requireContext()).toString(),
+                        retryAction = {
+                            requireContext().singleVibrationWithSystemCheck(35)
 
-                errorText?.let {
-                    Toast.makeText(requireContext(), errorText, Toast.LENGTH_SHORT).show()
-                    viewModelFilms.consumerError()
+                            viewModelFilms.load()
+                        },
+                    )
                 }
 
                 adapter.submitList(
-                    stateFilms.films
+                    MainScreenMapperImpl.map(
+                        genres = viewModelFilms.getAvailableGenres(),
+                        films = stateFilms.films,
+                        selectedGenre = stateFilms.genre,
+                        genresTitle = getString(R.string.genres),
+                        filmsTitle = getString(R.string.films)
+                    )
                 )
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)

@@ -27,7 +27,7 @@ android {
     defaultConfig {
         applicationId = "com.sequenia"
         minSdk = 26
-        compileSdk = 36
+        targetSdk = 36
         versionCode = 1
         versionName = "v1.0"
 
@@ -92,8 +92,6 @@ dependencies {
      *
      * https://developer.android.com/jetpack/androidx/releases/constraintlayout
      * https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout
-     *
-     * implementation("androidx.constraintlayout:constraintlayout:2.2.1")
      */
     implementation(libs.androidx.constraintlayout)
 
@@ -101,22 +99,13 @@ dependencies {
      * Serialization
      *
      * https://github.com/Kotlin/kotlinx.serialization
-     * https://kotlinlang.org/docs/serialization.html
-     *
-     * implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
      */
     implementation(libs.kotlinx.serialization.json)
 
     /**
      * SplashScreen
      *
-     * https://developer.android.com/reference/android/window/SplashScreen
      * https://developer.android.com/reference/androidx/core/splashscreen/SplashScreen
-     * https://developer.android.com/develop/ui/views/launch/splash-screen
-     *
-     * https://github.com/patildnyaneshwar/SplashScreen
-     *
-     * implementation("androidx.core:core-splashscreen:1.0.1")
      */
     implementation(libs.androidx.core.splashscreen)
 
@@ -124,7 +113,6 @@ dependencies {
      * Android Jetpack's Navigation component
      *
      * https://developer.android.com/guide/navigation
-     *
      */
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui)
@@ -148,7 +136,6 @@ dependencies {
      * BlurTransformation glide-transformations
      *
      * https://github.com/bumptech/glide
-     * https://github.com/wasabeef/glide-transformations
      */
     implementation(libs.glide)
 
@@ -179,11 +166,4 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
-
-    /**
-     * SwipeRefreshLayout
-     *
-     * https://developer.android.com/develop/ui/views/touch-and-input/swipe/add-swipe-interface
-     */
-    implementation(libs.androidx.swiperefreshlayout)
 }

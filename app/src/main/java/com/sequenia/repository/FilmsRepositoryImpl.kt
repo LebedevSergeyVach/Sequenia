@@ -1,7 +1,7 @@
 package com.sequenia.repository
 
 import com.sequenia.api.FilmsApi
-import com.sequenia.data.FilmData
+import com.sequenia.data.film.FilmData
 
 class FilmsRepositoryImpl(
     private val api: FilmsApi

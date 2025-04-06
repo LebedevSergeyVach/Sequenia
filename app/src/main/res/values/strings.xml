@@ -4,6 +4,7 @@
     <!-- Films -->
     <string name="films">Films</string>
     <string name="film">Film</string>
+    <string name="genres">Genres</string>
     <string name="kino_poisk">KinoPoisk</string>
 
     <!-- Error -->

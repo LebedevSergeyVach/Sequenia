@@ -1,4 +1,4 @@
-package com.sequenia.data
+package com.sequenia.data.film
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,6 +1,6 @@
 package com.sequenia.api
 
-import com.sequenia.data.FilmsResponses
+import com.sequenia.data.film.FilmsResponses
 
 import retrofit2.http.GET
 

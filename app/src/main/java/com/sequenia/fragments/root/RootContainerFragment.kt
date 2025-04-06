@@ -1,6 +1,8 @@
 package com.sequenia.fragments.root
 
+import android.content.Context
 import android.os.Bundle
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,14 @@ import com.sequenia.R
 import com.sequenia.databinding.FragmentRootBinding
 
 class RootContainerFragment : Fragment() {
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        parentFragmentManager.beginTransaction()
+            .setPrimaryNavigationFragment(this)
+            .commit()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,13 +35,12 @@ class RootContainerFragment : Fragment() {
         val navController =
             requireNotNull(childFragmentManager.findFragmentById(R.id.toolbarContainer)).findNavController()
 
-        binding.toolbar.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController = navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id != R.id.FilmsFragment) {
                 binding.toolbar.navigationIcon = AppCompatResources.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_arrow_24
+                    requireContext(), R.drawable.ic_arrow_24
                 )?.apply {
                     setTint(ContextCompat.getColor(requireContext(), R.color.white))
                 }
