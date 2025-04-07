@@ -10,7 +10,12 @@
 Android приложение для отображения списка фильмов и просмотра информации о них.
 За основу взята информация с сайта [КиноПоиск](https://www.kinopoisk.ru).
 
-#### Посмотреть изображения мобильного приложения [Films](documentation/README.md).
+---
+
+### Скачать [APK-файл](https://github.com/LebedevSergeyVach/Sequenia/releases/tag/v1.0.0) release версии приложения.
+### Посмотреть изображения мобильного приложения [Films](documentation/README.md).
+
+[![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)](https://github.com/LebedevSergeyVach/Sequenia/releases/tag/v1.0.0)
 
 ---
 
