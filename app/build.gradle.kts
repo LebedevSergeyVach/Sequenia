@@ -88,12 +88,22 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     /**
-     * Constraintlayout
+     * OkHttp
      *
-     * https://developer.android.com/jetpack/androidx/releases/constraintlayout
-     * https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout
+     * https://github.com/square/okhttp
      */
-    implementation(libs.androidx.constraintlayout)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+
+    /**
+     * Retrofit
+     *
+     * https://github.com/square/retrofit
+     * https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization
+     */
+    implementation(libs.retrofit)
+    implementation(libs.converter.kotlinx.serialization)
 
     /**
      * Serialization
@@ -101,13 +111,6 @@ dependencies {
      * https://github.com/Kotlin/kotlinx.serialization
      */
     implementation(libs.kotlinx.serialization.json)
-
-    /**
-     * SplashScreen
-     *
-     * https://developer.android.com/reference/androidx/core/splashscreen/SplashScreen
-     */
-    implementation(libs.androidx.core.splashscreen)
 
     /**
      * Android Jetpack's Navigation component
@@ -120,16 +123,9 @@ dependencies {
     /**
      * ViewModel Lifecycle
      *
-     * https://developer.android.com/jetpack/androidx/releases/lifecycle
+     * https://developer.android.com/topic/libraries/architecture/viewmodel
      */
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-    /**
-     * SkeletonLayout
-     *
-     * https://github.com/Faltenreich/SkeletonLayout
-     */
-    implementation(libs.skeletonlayout)
 
     /**
      * Glide
@@ -140,24 +136,6 @@ dependencies {
     implementation(libs.glide)
 
     /**
-     * Retrofit
-     *
-     * https://github.com/square/retrofit
-     * https://github.com/square/retrofit/tree/trunk/retrofit-converters/kotlinx-serialization
-     */
-    implementation(libs.retrofit)
-    implementation(libs.converter.kotlinx.serialization)
-
-    /**
-     * OkHttp
-     *
-     * https://github.com/square/okhttp
-     */
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-
-    /**
      * DI Koin
      *
      * https://github.com/InsertKoinIO/koin
@@ -166,4 +144,26 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
+
+    /**
+     * SplashScreen
+     *
+     * https://developer.android.com/reference/androidx/core/splashscreen/SplashScreen
+     */
+    implementation(libs.androidx.core.splashscreen)
+
+    /**
+     * Constraintlayout
+     *
+     * https://developer.android.com/jetpack/androidx/releases/constraintlayout
+     * https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout
+     */
+    implementation(libs.androidx.constraintlayout)
+
+    /**
+     * SkeletonLayout
+     *
+     * https://github.com/Faltenreich/SkeletonLayout
+     */
+    implementation(libs.skeletonlayout)
 }

@@ -6,10 +6,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sequenia.R
 import com.sequenia.databinding.CardGenreBinding
 
+/**
+ * [GenreViewHolder] - [RecyclerView.ViewHolder] для отображения жанра фильма.
+ *
+ * @property binding ViewBinding элемента жанра
+ *
+ * @see CardGenreBinding Для структуры разметки
+ */
 class GenreViewHolder(
     private val binding: CardGenreBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    /**
+     * Привязывает данные жанра к View элементам.
+     *
+     * @param textGenre Название жанра для отображения
+     * @param isSelected Флаг выбранного состояния для окраски фона
+     */
     fun bind(textGenre: String, isSelected: Boolean) {
         binding.itemHeaderSeparator.text = textGenre
         binding.root.setBackgroundColor(

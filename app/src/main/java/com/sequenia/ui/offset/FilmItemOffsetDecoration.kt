@@ -8,9 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.sequenia.adapter.main.MainAdapter
 
+/**
+ * Декоратор для добавления отступов между элементами [RecyclerView].
+ * Реализует разные схемы отступов для разных типов элементов.
+ *
+ * @property itemSpacing Отступ между элементами в пикселях.
+ * @property edgePadding Отступ от краев [RecyclerView] в пикселях для списка фильмов.
+ *
+ * @see [RecyclerView.ItemDecoration] Базовый класс декоратора.
+ */
 class FilmItemOffsetDecoration(
     @Px private val itemSpacing: Int,
-    @Px private val edgePadding: Int = itemSpacing * 2,
+    @Px private val edgePadding: Int,
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(

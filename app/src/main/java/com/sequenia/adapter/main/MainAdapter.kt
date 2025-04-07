@@ -10,15 +10,24 @@ import com.sequenia.BuildConfig
 import com.sequenia.adapter.common.film.FilmViewHolder
 import com.sequenia.adapter.common.genre.GenreViewHolder
 import com.sequenia.adapter.common.header.HeaderViewHolder
-import com.sequenia.data.film.FilmData
+import com.sequenia.data.FilmData
 import com.sequenia.databinding.CardFilmBinding
 import com.sequenia.databinding.CardGenreBinding
 import com.sequenia.databinding.ItemHeaderSeparatorBinding
 import com.sequenia.utils.helper.LoggerHelper
 
+/**
+ * Адаптер для отображения списка элементов главного экрана.
+ * Поддерживает три типа элементов: фильмы, жанры и заголовки.
+ *
+ * @param listener Интерфейс для обработки пользовательских действий.
+ *
+ * @see [ListAdapter] Базовый класс адаптера.
+ * @see [MainScreenItemSealed] Типы элементов списка.
+ */
 class MainAdapter(
     private val listener: FilmListener
-) : ListAdapter<MainScreenItem, ViewHolder>(MainItemCallback()) {
+) : ListAdapter<MainScreenItemSealed, ViewHolder>(MainItemCallback()) {
 
     companion object {
         const val TYPE_FILM = 0
@@ -31,49 +40,77 @@ class MainAdapter(
         fun onGenreClicked(genre: String)
     }
 
+    /**
+     * Определяет тип элемента списка по позиции.
+     *
+     * @param position Позиция элемента в списке.
+     *
+     * @return Одна из констант [TYPE_FILM], [TYPE_GENRE] или [TYPE_HEADER].
+     */
     override fun getItemViewType(position: Int): Int =
         when (getItem(position)) {
-            is MainScreenItem.Film -> TYPE_FILM
-            is MainScreenItem.Genre -> TYPE_GENRE
-            is MainScreenItem.Header -> TYPE_HEADER
+            is MainScreenItemSealed.Film -> TYPE_FILM
+            is MainScreenItemSealed.Genre -> TYPE_GENRE
+            is MainScreenItemSealed.Header -> TYPE_HEADER
+
             else -> {
                 val error = "Invalid position view type: $position"
-
                 if (BuildConfig.DEBUG) LoggerHelper.e(error)
-
-                error(error)
                 throw IllegalArgumentException(error)
             }
         }
 
+    /**
+     * Создает [ViewHolder] в зависимости от типа элемента.
+     *
+     * @param parent Родительская [ViewGroup].
+     * @param viewType Тип создаваемого [ViewHolder].
+     *
+     * @return Созданный [ViewHolder].
+     *
+     * @see [FilmViewHolder]
+     * @see [GenreViewHolder]
+     * @see [HeaderViewHolder]
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         when (viewType) {
             TYPE_FILM -> createFilmViewHolder(parent = parent)
             TYPE_GENRE -> createGenreViewHolder(parent = parent)
             TYPE_HEADER -> createItemHeaderViewHolder(parent = parent)
+
             else -> {
                 val error = "Invalid view type: $viewType"
-
                 if (BuildConfig.DEBUG) LoggerHelper.e(error)
-
-                error(error)
                 throw IllegalArgumentException(error)
             }
         }
 
+    /**
+     * Привязывает данные к [ViewHolder].
+     *
+     * @param holder [ViewHolder] к которому привязываются данные.
+     * @param position Позиция элемента в списке.
+     */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when (val item: MainScreenItem = getItem(position)) {
-            is MainScreenItem.Film -> (holder as FilmViewHolder).bind(film = item.data)
+        when (val item: MainScreenItemSealed = getItem(position)) {
+            is MainScreenItemSealed.Film -> (holder as FilmViewHolder).bind(film = item.data)
 
-            is MainScreenItem.Genre -> (holder as GenreViewHolder).bind(
+            is MainScreenItemSealed.Genre -> (holder as GenreViewHolder).bind(
                 textGenre = item.name,
                 isSelected = item.isSelected
             )
 
-            is MainScreenItem.Header -> (holder as HeaderViewHolder).bind(textHeader = item.title)
+            is MainScreenItemSealed.Header -> (holder as HeaderViewHolder).bind(textHeader = item.title)
         }
     }
 
+    /**
+     * Создает [ViewHolder] для элемента типа [TYPE_FILM].
+     *
+     * @param parent Родительская [ViewGroup].
+     *
+     * @return Созданный [FilmViewHolder].
+     */
     private fun createFilmViewHolder(parent: ViewGroup): FilmViewHolder {
         val binding =
             CardFilmBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -82,7 +119,7 @@ class MainAdapter(
 
         binding.cardFilm.setOnClickListener {
             val item =
-                getItem(viewHolder.bindingAdapterPosition) as? MainScreenItem.Film
+                getItem(viewHolder.bindingAdapterPosition) as? MainScreenItemSealed.Film
 
             item?.data?.let(listener::onGetInfoFilmClicked)
         }
@@ -90,6 +127,13 @@ class MainAdapter(
         return viewHolder
     }
 
+    /**
+     * Создает [ViewHolder] для элемента типа [TYPE_GENRE].
+     *
+     * @param parent Родительская [ViewGroup]
+     *
+     * @return Созданный [GenreViewHolder].
+     */
     private fun createGenreViewHolder(parent: ViewGroup): GenreViewHolder {
         val binding =
             CardGenreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -98,7 +142,7 @@ class MainAdapter(
 
         binding.root.setOnClickListener {
             val item =
-                getItem(viewHolder.bindingAdapterPosition) as? MainScreenItem.Genre
+                getItem(viewHolder.bindingAdapterPosition) as? MainScreenItemSealed.Genre
 
             item?.name?.let(listener::onGenreClicked)
         }
@@ -106,6 +150,13 @@ class MainAdapter(
         return viewHolder
     }
 
+    /**
+     * Создает [ViewHolder] для элемента типа [TYPE_HEADER]".
+     *
+     * @param parent Родительская [ViewGroup].
+     *
+     * @return Созданный [HeaderViewHolder].
+     */
     private fun createItemHeaderViewHolder(parent: ViewGroup): HeaderViewHolder {
         val binding =
             ItemHeaderSeparatorBinding.inflate(
