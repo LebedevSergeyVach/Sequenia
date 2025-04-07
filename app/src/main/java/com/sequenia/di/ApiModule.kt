@@ -18,20 +18,47 @@ import retrofit2.create
 
 import java.util.concurrent.TimeUnit
 
+/**
+ * Модуль для предоставления зависимостей, связанных с `API` и сетью.
+ *
+ * @see Module Аннотация `Koin` для объявления модуля.
+ */
 @Module
 class ApiModule {
+
+    /**
+     * Предоставляет экземпляр [Json] с настройками по умолчанию.
+     *
+     * @return Настроенный экземпляр [Json].
+     *
+     * @property ignoreUnknownKeys Игнорировать неизвестные ключи при парсинге.
+     * @property coerceInputValues Приводить несоответствующие значения к корректным типам.
+     *
+     * @single Аннотация `Koin` для создания `singleton`-объекта.
+     */
     @Single
     fun provideJson(): Json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
     }
 
+    /**
+     * Предоставляет настроенный экземпляр [OkHttpClient].
+     * В `debug`-режиме добавляет логгирование запросов.
+     * Устанавливает таймауты и кеширование.
+     *
+     * @return Настроенный [OkHttpClient].
+     *
+     * @property connectTimeout Таймаут соединения (30 секунд).
+     * @property readTimeout Таймаут чтения (30 секунд).
+     *
+     * @see [HttpLoggingInterceptor] Для логгирования в `debug`-режиме.
+     */
     @Single
     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .let { clientOkHttp: OkHttpClient.Builder ->
                 if (BuildConfig.DEBUG) {
                     clientOkHttp.addInterceptor(
@@ -53,6 +80,16 @@ class ApiModule {
             }
             .build()
 
+    /**
+     * Предоставляет экземпляр [Retrofit] с базовыми настройками.
+     *
+     * @param [okHttpClient] Клиент для сетевых запросов.
+     *
+     * @return Настроенный экземпляр [Retrofit].
+     *
+     * @property baseUrl Базовый `URL` из [BuildConfig].
+     * @property addConverterFactory Добавляет конвертер для работы с [JSON].
+     */
     @Single
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
@@ -61,6 +98,12 @@ class ApiModule {
             .addConverterFactory(provideJson().asConverterFactory("application/json".toMediaType()))
             .build()
 
+    /**
+     * Предоставляет `API` для работы с фильмами.
+     *
+     * @param retrofit Экземпляр [Retrofit].
+     * @return Реализация [FilmsApi].
+     */
     @Single
     fun provideFilmsApi(retrofit: Retrofit): FilmsApi = retrofit.create()
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="item_spacing_card_films">8dp</dimen>
+    <dimen name="item_padding_card_films_8dp">8dp</dimen>
+    <dimen name="item_edge_padding_recycler_view_films_16dp">16dp</dimen>
     <dimen name="layout_margin_horizontal_text_info_film_16dp">16dp</dimen>
 </resources>

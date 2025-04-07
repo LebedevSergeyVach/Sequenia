@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sequenia.BuildConfig
 import com.sequenia.R
 import com.sequenia.adapter.main.MainAdapter
-import com.sequenia.data.film.FilmData
+import com.sequenia.data.FilmData
 import com.sequenia.databinding.FragmentFilmsBinding
 import com.sequenia.ui.mapper.MainScreenMapperImpl
 import com.sequenia.ui.offset.FilmItemOffsetDecoration
@@ -39,6 +39,14 @@ import kotlinx.coroutines.flow.onEach
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ * Фрагмент для отображения списка фильмов.
+ * Использует [FilmsViewModel] для управления состоянием и [RecyclerView] для отображения.
+ *
+ * @property viewModelFilms [viewModel] для управления данными фильмов.
+ *
+ * @see [Fragment] Базовый класс фрагмента.
+ */
 class FilmsFragment : Fragment() {
 
     private val viewModelFilms: FilmsViewModel by viewModel()
@@ -56,6 +64,11 @@ class FilmsFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Создает адаптер для [RecyclerView] с обработчиками кликов.
+     *
+     * @return Настроенный адаптер [MainAdapter].
+     */
     private fun createFilmAdapter(): MainAdapter = MainAdapter(
         listener = object : MainAdapter.FilmListener {
             override fun onGetInfoFilmClicked(film: FilmData) {
@@ -90,6 +103,12 @@ class FilmsFragment : Fragment() {
         }
     )
 
+    /**
+     * Настраивает [RecyclerView] с [GridLayoutManager] и декораторами.
+     *
+     * @param binding [FragmentFilmsBinding] фрагмента.
+     * @param adapter адаптер [MainAdapter] для [RecyclerView].
+     */
     private fun controlSettingsFilmsRecyclerView(
         binding: FragmentFilmsBinding,
         adapter: MainAdapter
@@ -103,6 +122,7 @@ class FilmsFragment : Fragment() {
                         MainAdapter.TYPE_HEADER -> 2
                         MainAdapter.TYPE_GENRE -> 2
                         MainAdapter.TYPE_FILM -> 1
+
                         else -> {
                             val error =
                                 "FilmsFragment.controlSettingsFilmsRecyclerView: Invalid view type ${
@@ -110,20 +130,17 @@ class FilmsFragment : Fragment() {
                                         position
                                     )
                                 }"
-
                             if (BuildConfig.DEBUG) LoggerHelper.e(error)
-
-                            error(error)
                             throw IllegalArgumentException(error)
                         }
                     }
                 }
             }
 
-            val spacing = resources.getDimensionPixelSize(R.dimen.item_spacing_card_films)
             binding.filmsRecyclerView.addItemDecoration(
                 FilmItemOffsetDecoration(
-                    itemSpacing = spacing,
+                    itemSpacing = resources.getDimensionPixelSize(R.dimen.item_padding_card_films_8dp),
+                    edgePadding = resources.getDimensionPixelSize(R.dimen.item_edge_padding_recycler_view_films_16dp),
                 )
             )
         }
@@ -131,6 +148,13 @@ class FilmsFragment : Fragment() {
         binding.filmsRecyclerView.adapter = adapter
     }
 
+    /**
+     * Подписывается на изменения состояния (`asStateFlow()`) [FilmsViewModel].
+     * Обновляет `UI` в соответствии с текущим состоянием.
+     *
+     * @param binding [FragmentFilmsBinding] фрагмента.
+     * @param adapter Адаптер [MainAdapter] для [RecyclerView].
+     */
     private fun observedStateViewModel(
         binding: FragmentFilmsBinding,
         adapter: MainAdapter,

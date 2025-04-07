@@ -10,7 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
-
+/**
+ * [SplashActivity] - стартовая Activity приложения, отображающая экран-заставку.
+ *
+ * @property [SplashScreen] Используется для управления экраном-заставкой
+ */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

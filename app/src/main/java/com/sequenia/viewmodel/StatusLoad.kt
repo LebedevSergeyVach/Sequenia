@@ -4,11 +4,11 @@ package com.sequenia.viewmodel
  * Интерфейс для описания состояния загрузки данных.
  *
  * Этот интерфейс используется для представления различных состояний загрузки данных:
- * - `Idle`: Данные не загружаются.
- * - `Loading`: Данные загружаются.
- * - `Error`: Произошла ошибка при загрузке данных.
+ * - [Idle]: Данные не загружаются.
+ * - [Loading]: Данные загружаются.
+ * - [Error]: Произошла ошибка при загрузке данных.
  *
- * @property throwableOrNull Возвращает исключение, если состояние `Error`, иначе `null`.
+ * @property throwableOrNull Возвращает исключение, если состояние [Error], иначе `null`.
  */
 interface StatusLoad {
     val throwableOrNull: Throwable?
@@ -32,7 +32,7 @@ interface StatusLoad {
     /**
      * Состояние, когда произошла ошибка при загрузке данных.
      *
-     * @property exception Исключение, вызвавшее ошибку.
+     * @param exception Исключение, вызвавшее ошибку.
      */
     data class Error(val exception: Exception) : StatusLoad
 }

@@ -10,6 +10,11 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 
+/**
+ * Класс приложения для инициализации `Koin`.
+ *
+ * @see Application Базовый класс приложения.
+ */
 class App : Application() {
     override fun onCreate() {
         super.onCreate()

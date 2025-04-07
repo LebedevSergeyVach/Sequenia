@@ -23,6 +23,11 @@ import com.sequenia.databinding.FragmentInfoFilmBinding
 
 import java.util.Locale
 
+/**
+ * Фрагмент для отображения детальной информации о фильме.
+ *
+ * @see [Fragment] Базовый класс фрагмента.
+ */
 class InfoFilmFragment : Fragment() {
 
     companion object {
@@ -61,7 +66,6 @@ class InfoFilmFragment : Fragment() {
         binding.textRating.text = String.format(Locale.US, "%.1f", rating)
         binding.textDescription.text = description
 
-
         renderingImageAttachmentPoster(binding = binding, imageUrl = imageUrl)
 
         controlToolbar(name = name)
@@ -69,6 +73,20 @@ class InfoFilmFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Загружает и отображает постер фильма с обработкой состояний с использованием [Glide].
+     *
+     * - Показывает скелетон во время загрузки
+     * - Использует крос-фейд анимацию (500 мс)
+     * - Загружает уменьшенную копию как превью
+     * - Кэширует изображения на диске
+     * - Обрабатывает ошибки загрузки
+     *
+     * @param binding [FragmentInfoFilmBinding] фрагмента.
+     * @param imageUrl `URL` изображения.
+     *
+     * @see [Glide] Для загрузки изображений
+     */
     private fun renderingImageAttachmentPoster(
         binding: FragmentInfoFilmBinding,
         imageUrl: String
@@ -114,6 +132,11 @@ class InfoFilmFragment : Fragment() {
             .into(binding.imageFilmAttachment)
     }
 
+    /**
+     * Настраивает [Toolbar] активности.
+     *
+     * @param name Название фильма для отображения в [Toolbar].
+     */
     private fun controlToolbar(name: String) {
         val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = name

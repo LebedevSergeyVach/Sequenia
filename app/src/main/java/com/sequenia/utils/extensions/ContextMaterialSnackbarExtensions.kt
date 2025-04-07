@@ -14,6 +14,17 @@ import com.sequenia.R
 
 import com.google.android.material.R as MaterialR
 
+/**
+ * Расширение для [Context], показывающее стилизованный [Snackbar] с возможностью повтора действия.
+ * Использует `Material Design` компоненты для кастомизации внешнего вида.
+ *
+ * @param binding ViewBinding для получения корневого `View`.
+ * @param message Текст сообщения для отображения.
+ * @param retryAction Лямбда-функция, выполняемая при нажатии на кнопку повтора.
+ *
+ * @see Snackbar Базовый класс [Snackbar].
+ * @see MaterialShapeDrawable Для кастомизации фона.
+ */
 fun Context.showErrorMaterialSnackbar(
     binding: ViewBinding, message: String, retryAction: () -> Unit,
 ) {
@@ -26,7 +37,8 @@ fun Context.showErrorMaterialSnackbar(
             fillColor = ColorStateList.valueOf(
                 ContextCompat.getColor(context, R.color.snackbar_background)
             )
-            setCornerSize(2f.dpToPx(context))
+//            setCornerSize(2f.dpToPx(context))
+            setCornerSize(2f)
         }
 
         setTextColor(

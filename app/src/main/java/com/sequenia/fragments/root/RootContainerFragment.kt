@@ -17,8 +17,19 @@ import androidx.navigation.ui.setupWithNavController
 import com.sequenia.R
 import com.sequenia.databinding.FragmentRootBinding
 
+/**
+ * Корневой фрагмент-контейнер для навигации.
+ * Устанавливается как primary navigation fragment и управляет Toolbar.
+ *
+ * @see [Fragment] Базовый класс фрагмента.
+ */
 class RootContainerFragment : Fragment() {
 
+    /**
+     * Вызывается при присоединении фрагмента к активности.
+     *
+     * @param context Контекст, к которому присоединяется фрагмент.
+     */
     override fun onAttach(context: Context) {
         super.onAttach(context)
         parentFragmentManager.beginTransaction()
