@@ -140,7 +140,6 @@ dependencies {
      *
      * https://github.com/InsertKoinIO/koin
      */
-    implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
